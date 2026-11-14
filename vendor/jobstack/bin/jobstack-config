@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# jobstack-config -- read/write ~/.jobstack/config.yaml
+set -euo pipefail
+
+STATE_DIR="${JOBSTACK_STATE_DIR:-$HOME/.jobstack}"
+CONFIG_FILE="$STATE_DIR/config.yaml"
+
+mkdir -p "$STATE_DIR"
+[ -f "$CONFIG_FILE" ] || touch "$CONFIG_FILE"
+
+usage() {
+  echo "Usage: jobstack-config <get|set|list> [key] [value]"
+  exit 1
+}
+
+[ $# -lt 1 ] && usage
+
+case "$1" in
+  get)
+    [ $# -lt 2 ] && usage
+    # 미설정 키는 빈 문자열 + exit 1 로 반환한다 — 호출측의 `|| echo "기본값"`
+    # 폴백이 작동하도록(프리앰블 PROACTIVE 등이 빈 문자열로 떨어지지 않게).
+    _val=$(grep "^$2:" "$CONFIG_FILE" 2>/dev/null | sed "s/^$2: *//")
+    if [ -n "$_val" ]; then
+      echo "$_val"
+    else
+      exit 1
+    fi
+    ;;
+  set)
+    [ $# -lt 3 ] && usage
+    if grep -q "^$2:" "$CONFIG_FILE" 2>/dev/null; then
+      # BSD/macOS의 `sed -i ''`는 GNU/Linux에서 ''를 파일명으로 해석해 실패한다.
+      # 임시 파일 교체 방식으로 두 플랫폼 모두에서 동작하게 한다.
+      _tmp=$(mktemp)
+      sed "s|^$2:.*|$2: $3|" "$CONFIG_FILE" > "$_tmp" && mv "$_tmp" "$CONFIG_FILE"
+    else
+      echo "$2: $3" >> "$CONFIG_FILE"
+    fi
+    ;;
+  list)
+    cat "$CONFIG_FILE"
+    ;;
+  *)
+    usage
+    ;;
+esac
