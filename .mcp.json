@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "korean-report-hwpx": {
+      "command": "uvx",
+      "args": ["korean-report-hwpx"]
+    }
+  }
+}
