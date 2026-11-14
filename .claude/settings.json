@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "jobstack": {
+      "source": {
+        "source": "github",
+        "repo": "thesun4sky/jobstack"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "jobstack@jobstack": true
+  }
+}
