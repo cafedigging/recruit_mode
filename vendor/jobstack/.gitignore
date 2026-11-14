@@ -1,0 +1,46 @@
+# State directory
+.jobstack/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+
+# Generated HTML (from jobstack-view)
+*.html
+!test/sample-data/*.html
+
+# Generated (rebuild with gen-skill-docs.sh)
+# SKILL.md files are committed for convenience
+
+# Browser scraper dependencies (npm install on first use)
+bin/node_modules/
+bin/package-lock.json
+
+# insane-search 어댑터 venv (install.sh --with-insane-search / Docker 빌드가 생성)
+bin/.is-venv/
+
+# Python bytecode cache (is-fetch.py 실행 부산물)
+__pycache__/
+*.pyc
+
+# 스킬 eval 실행 산출물·업로드 패키지 (재생성 가능)
+test/eval-report.md
+test/eval-report.json
+dist/
+test/.eval-archive/
+test/eval-trigger-report.md
+test/eval-trigger-report.json

@@ -1,0 +1,1 @@
+../../vendor/jobstack/agents/researcher.md
